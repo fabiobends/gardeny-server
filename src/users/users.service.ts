@@ -6,6 +6,7 @@ import { DatabaseService } from '../database/database.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { SignUpUserDto } from './dto/sign-up-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -60,5 +61,16 @@ export class UsersService {
 
   remove(id: UUID) {
     return this.database.removeUserById(id);
+  }
+
+  async signUp({ email, password }: SignUpUserDto) {
+    if (!password) return null;
+    const hashedPassword = await this.hashPassword(password);
+    return this.database.signUpUser({
+      active: false,
+      role: 'USER',
+      email,
+      hashedPassword,
+    });
   }
 }

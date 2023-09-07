@@ -51,4 +51,10 @@ export class DatabaseService implements DatabaseServiceTemplate {
   async removeUserById(id: UUID): Promise<User> {
     return this.prisma.user.delete({ where: { id } });
   }
+
+  async signUpUser(data: Prisma.UserCreateInput): Promise<User> {
+    return this.prisma.user.create({
+      data,
+    });
+  }
 }

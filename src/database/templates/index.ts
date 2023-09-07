@@ -19,4 +19,6 @@ export abstract class DatabaseServiceTemplate {
   ): Promise<User | null>;
 
   abstract removeUserById(id: UUID): Promise<User | null>;
+
+  abstract signUpUser(data: Prisma.UserCreateInput): Promise<User | null>;
 }

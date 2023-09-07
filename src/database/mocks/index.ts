@@ -71,4 +71,32 @@ export class DatabaseServiceMock implements DatabaseServiceTemplate {
     }
     return null;
   }
+
+  async signUpUser({
+    email,
+    hashedPassword,
+  }: Prisma.UserCreateInput): Promise<User | null> {
+    let id = this.users.find((item) => item.id === USER_TEST.id)?.id;
+    if (!id) {
+      id = USER_TEST.id;
+    } else {
+      id = randomUUID().toString();
+    }
+
+    const createdAt = new Date();
+
+    const user: User = {
+      ...USER_TEST,
+      id,
+      name: null,
+      description: null,
+      image: null,
+      createdAt,
+      updatedAt: createdAt,
+      email,
+      hashedPassword,
+    };
+    this.users.push(user);
+    return user;
+  }
 }

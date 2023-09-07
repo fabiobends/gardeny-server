@@ -9,8 +9,8 @@ export class DatabaseServiceMock implements DatabaseServiceTemplate {
   private users: Array<User> = [];
 
   async createUser({
-    name,
-    description,
+    name: userName,
+    description: userDescription,
     email,
     hashedPassword,
   }: Prisma.UserCreateInput): Promise<User> {
@@ -28,8 +28,8 @@ export class DatabaseServiceMock implements DatabaseServiceTemplate {
       id,
       createdAt,
       updatedAt: createdAt,
-      name,
-      description,
+      name: userName ?? USER_TEST.name,
+      description: userDescription ?? USER_TEST.description,
       email,
       hashedPassword,
     };

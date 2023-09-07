@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
-import { DatabaseModuleMock } from './mocks';
+import { DatabaseModuleMock } from '@/database/mocks';
 import { UUID } from 'node:crypto';
 import { CreateUserDto } from './dto/create-user.dto';
 

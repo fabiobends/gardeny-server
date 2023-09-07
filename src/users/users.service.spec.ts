@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Role } from '@prisma/client';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
-import { DatabaseProviderMock } from './mocks';
+import { DatabaseProviderMock } from '@/database/mocks';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UUID } from 'node:crypto';
 import { SignUpUserDto } from './dto/sign-up-user.dto';

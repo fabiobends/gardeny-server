@@ -1,9 +1,8 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
-
 import * as jwt from 'jsonwebtoken';
-import { UsersService } from '../users/users.service';
-import { User } from '../users/entities/user.entity';
-import { SignUpUserDto } from '../users/dto/sign-up-user.dto';
+import { UsersService } from '@/users/users.service';
+import { User } from '@/users/entities/user.entity';
+import { SignUpUserDto } from '@/users/dto/sign-up-user.dto';
 import { UserToken } from './entities/user-token.entity';
 
 @Injectable()

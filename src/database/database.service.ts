@@ -1,12 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
-
 import { Prisma } from '@prisma/client';
 import { UUID } from 'node:crypto';
 import { PAGE_SIZE } from './database.constants';
 import { PageRequest } from './database.types';
 import { PrismaService } from './prisma.service';
 import { DatabaseServiceTemplate } from './templates';
-import { User } from 'src/users/entities/user.entity';
+import { User } from '@/users/entities/user.entity';
 
 @Injectable()
 export class DatabaseService implements DatabaseServiceTemplate {

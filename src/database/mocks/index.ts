@@ -1,9 +1,11 @@
 import { Prisma } from '@prisma/client';
 import { UUID, randomUUID } from 'node:crypto';
-import { User } from 'src/users/entities/user.entity';
-import { USER_TEST } from '../../users/mocks/constants';
+import { User } from '@/users/entities/user.entity';
+import { USER_TEST } from '@/users/mocks/constants';
 import { PageRequest } from '../database.types';
 import { DatabaseServiceTemplate } from '../templates';
+import { DatabaseModule } from '../database.module';
+import { DatabaseService } from '../database.service';
 
 export class DatabaseServiceMock implements DatabaseServiceTemplate {
   private users: Array<User> = [];
@@ -100,3 +102,13 @@ export class DatabaseServiceMock implements DatabaseServiceTemplate {
     return user;
   }
 }
+
+export const DatabaseProviderMock = {
+  provide: DatabaseService,
+  useClass: DatabaseServiceMock,
+};
+
+export const DatabaseModuleMock = {
+  module: DatabaseModule,
+  providers: [DatabaseProviderMock],
+};

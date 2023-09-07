@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { UUID } from 'node:crypto';
 import { PageRequest } from '../database.types';
-import { User } from 'src/users/entities/user.entity';
+import { User } from '@/users/entities/user.entity';
 
 export abstract class DatabaseServiceTemplate {
   abstract createUser(data: Prisma.UserCreateInput): Promise<User | null>;

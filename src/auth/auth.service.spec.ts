@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { SignUpUserDto } from '../users/dto/sign-up-user.dto';
-import { USER_TEST, USER_TEST_PASSWORD } from './../users/mocks/constants';
+import { SignUpUserDto } from '@/users/dto/sign-up-user.dto';
+import { USER_TEST, USER_TEST_PASSWORD } from '@/users/mocks/constants';
 import { AuthService } from './auth.service';
 import { UsersModuleMock } from './mocks';
 

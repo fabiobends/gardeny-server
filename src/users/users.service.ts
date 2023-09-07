@@ -44,10 +44,10 @@ export class UsersService {
     return this.database.findUserById(id);
   }
 
-  async update(
+  update(
     id: UUID,
     { active, description, email, password, image, name, role }: UpdateUserDto,
-  ): Promise<User> {
+  ) {
     return this.database.updateUser(id, {
       active,
       description,

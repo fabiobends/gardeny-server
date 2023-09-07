@@ -39,7 +39,7 @@ describe('UsersService', () => {
     expect(result).toHaveProperty('id');
     expect(result).toHaveProperty('image', null);
     expect(result).toHaveProperty('role', Role.USER);
-    expect(result).toHaveProperty('active', true);
+    expect(result).toHaveProperty('active', false);
     expect(result).toHaveProperty('name', entries.name);
     expect(result).toHaveProperty('description', entries.description);
     expect(result).toHaveProperty('email', entries.email);

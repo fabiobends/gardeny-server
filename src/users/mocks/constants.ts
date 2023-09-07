@@ -9,6 +9,6 @@ export const USER_TEST = {
   name: 'Tester',
   description: 'Description',
   image: null,
-  active: true,
+  active: false,
   role: Role.USER,
 };

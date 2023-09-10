@@ -13,6 +13,8 @@ export abstract class DatabaseServiceTemplate {
 
   abstract findUserById(id: UUID): Promise<User | null>;
 
+  abstract findUserByEmail(email: string): Promise<User | null>;
+
   abstract updateUser(
     id: UUID,
     data: Prisma.UserUpdateInput,

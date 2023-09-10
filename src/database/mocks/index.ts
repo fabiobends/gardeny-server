@@ -65,6 +65,12 @@ export class DatabaseServiceMock implements DatabaseServiceTemplate {
     return null;
   }
 
+  async findUserByEmail(email: string): Promise<User | null> {
+    const user = this.users.find((item) => item.email === email);
+    if (user) return user;
+    return null;
+  }
+
   async removeUserById(id: UUID): Promise<User | null> {
     const user = this.users.find((item) => item.id === id);
     if (user) {

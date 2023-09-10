@@ -69,7 +69,8 @@ export class AuthService {
         data.password,
       );
 
-      if (!isValid) throw new Error('Either password or email is invalid');
+      if (!isValid)
+        throw new UnauthorizedException('Either password or email is invalid');
 
       const payload = { userId: user.id };
       const token = await this.jwtService.signAsync(payload, {
@@ -83,7 +84,8 @@ export class AuthService {
         refreshToken,
       };
     } catch (err) {
-      throw new UnauthorizedException(err.message);
+      if (err instanceof UnauthorizedException) throw err;
+      throw new InternalServerErrorException("Couldn't login the user");
     }
   }
 }

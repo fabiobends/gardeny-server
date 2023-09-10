@@ -43,6 +43,10 @@ export class UsersService {
     return this.database.findUserById(id);
   }
 
+  findOneByEmail(email: string) {
+    return this.database.findUserByEmail(email);
+  }
+
   update(
     id: UUID,
     { active, description, email, password, image, name, role }: UpdateUserDto,
@@ -71,5 +75,16 @@ export class UsersService {
       email,
       hashedPassword,
     });
+  }
+
+  verifyUserByPassword(user: User, password: string) {
+    return this.checkPassword(password, user.hashedPassword);
+  }
+
+  private async checkPassword(
+    password: string,
+    hashPassword: string,
+  ): Promise<boolean> {
+    return bcrypt.compare(password, hashPassword);
   }
 }

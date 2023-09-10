@@ -4,6 +4,7 @@ import { SignUpUserDto } from '@/users/dto/sign-up-user.dto';
 import { USER_TEST, USER_TEST_PASSWORD } from '@/users/mocks/constants';
 import { AuthService } from './auth.service';
 import { UsersModuleMock } from './mocks';
+import { isJWT } from 'class-validator';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -31,5 +32,19 @@ describe('AuthService', () => {
     expect(spy).toHaveBeenCalled();
     expect(result).not.toBeNull();
     expect(result).toHaveProperty('token');
+  });
+
+  it('should be able to login a user', async () => {
+    const spy = jest.spyOn(service, 'login');
+    const entries: SignUpUserDto = {
+      email: USER_TEST.email,
+      password: USER_TEST_PASSWORD,
+    };
+    const result = await service.login(entries);
+    const { token, refreshToken } = result;
+    expect(spy).toHaveBeenCalled();
+    expect(result).not.toBeNull();
+    expect(isJWT(token)).toBe(true);
+    expect(isJWT(refreshToken)).toBe(true);
   });
 });

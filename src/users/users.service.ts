@@ -81,10 +81,7 @@ export class UsersService {
     return this.checkPassword(password, user.hashedPassword);
   }
 
-  private async checkPassword(
-    password: string,
-    hashPassword: string,
-  ): Promise<boolean> {
+  private checkPassword(password: string, hashPassword: string) {
     return bcrypt.compare(password, hashPassword);
   }
 }

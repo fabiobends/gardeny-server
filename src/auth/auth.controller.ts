@@ -16,7 +16,9 @@ export class AuthController {
 
   @Post('/sign-up')
   @UsePipes(ValidationPipe)
-  create(@Body() signUpUserDto: SignUpUserDto) {
-    this.authService.signUp(signUpUserDto);
+  signUp(@Body() signUpUserDto: SignUpUserDto) {
+    return this.authService.signUp(signUpUserDto);
+  }
+
   }
 }

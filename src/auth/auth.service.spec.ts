@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { AppModule } from '@/app/app.module';
 import { SignUpUserDto } from '@/users/dto/sign-up-user.dto';
 import { USER_TEST, USER_TEST_PASSWORD } from '@/users/mocks/constants';
 import { AuthService } from './auth.service';
@@ -9,7 +10,7 @@ describe('AuthService', () => {
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [UsersModuleMock],
+      imports: [UsersModuleMock, AppModule],
       providers: [AuthService],
     }).compile();
 

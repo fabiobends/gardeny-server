@@ -1,57 +1,89 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
-import * as jwt from 'jsonwebtoken';
-import { UsersService } from '@/users/users.service';
-import { User } from '@/users/entities/user.entity';
 import { SignUpUserDto } from '@/users/dto/sign-up-user.dto';
+import { User } from '@/users/entities/user.entity';
+import { UsersService } from '@/users/users.service';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { UserToken } from './entities/user-token.entity';
 
 @Injectable()
 export class AuthService {
-  @Inject(UsersService)
-  private readonly usersService: UsersService;
+  constructor(
+    private usersService: UsersService,
+    private jwtService: JwtService,
+  ) {}
 
   async signUp(data: SignUpUserDto): Promise<UserToken> {
+    const existentUser = await this.usersService.findOneByEmail(data.email);
+    if (existentUser) {
+      return this.tryGetTemporaryUserToken(existentUser);
+    }
     const user = await this.usersService.signUp(data);
-    return this.checkIfUserExistsThenReturnUserToken(user);
+    return this.checkIfUserIsValidThenReturnTemporaryUserToken(user);
   }
 
-  private checkIfUserExistsThenReturnUserToken(user: User | null): UserToken {
+  private checkIfUserIsValidThenReturnTemporaryUserToken(
+    user: User | null,
+  ): Promise<UserToken> {
     if (!user) {
-      throw new HttpException(
+      throw new BadRequestException(
         "Couldn't create account, invalid user data",
-        HttpStatus.BAD_REQUEST,
       );
     }
-    return this.tryGetUserToken(user);
+    return this.tryGetTemporaryUserToken(user);
   }
 
-  private tryGetUserToken(user: User): UserToken {
+  private async tryGetTemporaryUserToken(user: User): Promise<UserToken> {
     try {
-      const token = this.getTokenForUser(
-        user,
-        process.env.JWT_SECRET_TOKEN as string,
-        '30m',
-      );
+      const payload = { userId: user.id };
+      const token = await this.jwtService.signAsync(payload, {
+        expiresIn: '30m',
+      });
       return {
         token,
         refreshToken: null,
       };
     } catch (err) {
-      throw new HttpException(
-        "Couldn't sign up the user",
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException("Couldn't sign up the user");
     }
   }
 
-  private getTokenForUser(
+  async login(data: SignUpUserDto): Promise<UserToken> {
+    const user = await this.usersService.findOneByEmail(data.email);
+    if (!user)
+      throw new UnauthorizedException('Either password or email is invalid');
+    return this.tryGetUserToken(user, data);
+  }
+
+  private async tryGetUserToken(
     user: User,
-    secret: string,
-    expiresIn: string | number,
-  ): string | null {
-    if (!secret) return null;
-    return jwt.sign({ id: user.id }, secret, {
-      expiresIn,
-    });
+    data: SignUpUserDto,
+  ): Promise<UserToken> {
+    try {
+      const isValid = await this.usersService.verifyUserByPassword(
+        user,
+        data.password,
+      );
+
+      if (!isValid) throw new Error('Either password or email is invalid');
+
+      const payload = { userId: user.id };
+      const token = await this.jwtService.signAsync(payload, {
+        expiresIn: '5m',
+      });
+      const refreshToken = await this.jwtService.signAsync(payload, {
+        expiresIn: '7d',
+      });
+      return {
+        token,
+        refreshToken,
+      };
+    } catch (err) {
+      throw new UnauthorizedException(err.message);
+    }
   }
 }

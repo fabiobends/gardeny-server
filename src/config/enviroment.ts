@@ -1,7 +1,11 @@
-import { config } from 'dotenv';
+import { DotenvConfigOutput, config } from 'dotenv';
+import { expand } from 'dotenv-expand';
+
+let env: DotenvConfigOutput = {};
 
 export const getConfig = () => {
-  if (process.env.NODE_ENV === 'production') config();
-  else if (!process.env.NODE_ENV) config({ path: '.env.development' });
-  else config({ path: `.env.${process.env.NODE_ENV.toLowerCase()}` });
+  if (process.env.NODE_ENV === 'production') env = config();
+  else if (!process.env.NODE_ENV) env = config({ path: '.env.development' });
+  else env = config({ path: `.env.${process.env.NODE_ENV.toLowerCase()}` });
+  expand(env);
 };

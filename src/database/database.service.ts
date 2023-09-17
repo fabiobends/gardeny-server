@@ -60,4 +60,9 @@ export class DatabaseService implements DatabaseServiceTemplate {
       data,
     });
   }
+
+  reset(): void {
+    this.prisma.user.deleteMany();
+    this.prisma.$disconnect();
+  }
 }

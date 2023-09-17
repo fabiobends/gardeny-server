@@ -107,6 +107,8 @@ export class DatabaseServiceMock implements DatabaseServiceTemplate {
     this.users.push(user);
     return user;
   }
+
+  reset() {}
 }
 
 export const DatabaseProviderMock = {

@@ -10,6 +10,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { AllowUnauthorizedRequest } from './auth.guard';
 
 @Controller()
 export class AuthController {
@@ -17,12 +18,14 @@ export class AuthController {
   private readonly authService: AuthService;
 
   @Post('/sign-up')
+  @AllowUnauthorizedRequest()
   @UsePipes(ValidationPipe)
   signUp(@Body() signUpUserDto: SignUpUserDto) {
     return this.authService.signUp(signUpUserDto);
   }
 
   @Post('/login')
+  @AllowUnauthorizedRequest()
   @HttpCode(HttpStatus.OK)
   @UsePipes(ValidationPipe)
   login(@Body() signUpUserDto: SignUpUserDto) {

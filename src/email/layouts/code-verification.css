@@ -1,0 +1,12 @@
+main {
+  justify-content: center;
+}
+
+h1 span { 
+  color: green
+}
+
+.code {
+  font-size: 18;
+  font-weight: bold;
+}

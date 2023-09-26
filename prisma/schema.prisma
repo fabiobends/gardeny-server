@@ -21,8 +21,8 @@ model User {
   hashedPassword String
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-  name           String?
-  description    String?
+  name           String
+  description    String
   image          String?
   active         Boolean
   role           Role

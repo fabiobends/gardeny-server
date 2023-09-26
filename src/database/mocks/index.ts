@@ -97,8 +97,6 @@ export class DatabaseServiceMock implements DatabaseServiceTemplate {
     const user: User = {
       ...USER_TEST,
       id,
-      name: null,
-      description: null,
       image: null,
       createdAt,
       updatedAt: createdAt,

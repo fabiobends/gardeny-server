@@ -6,6 +6,8 @@ import { PageRequest } from './database.types';
 import { PrismaService } from './prisma.service';
 import { DatabaseServiceTemplate } from './templates';
 import { User } from '@/users/entities/user.entity';
+import { Code } from '@/code/entities/code.entity';
+import { CodeWithUser } from '@/code/entities/code-with-user.entity';
 
 @Injectable()
 export class DatabaseService implements DatabaseServiceTemplate {
@@ -58,6 +60,17 @@ export class DatabaseService implements DatabaseServiceTemplate {
   async signUpUser(data: Prisma.UserCreateInput): Promise<User> {
     return this.prisma.user.create({
       data,
+    });
+  }
+
+  async createCode(data: Prisma.CodeCreateInput): Promise<Code> {
+    return this.prisma.code.create({ data });
+  }
+
+  async findCodeByValue(value: number): Promise<CodeWithUser | null> {
+    return this.prisma.code.findUnique({
+      where: { value },
+      include: { user: true },
     });
   }
 

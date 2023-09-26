@@ -6,6 +6,7 @@ import { PageRequest } from '../database.types';
 import { DatabaseServiceTemplate } from '../templates';
 import { DatabaseModule } from '../database.module';
 import { DatabaseService } from '../database.service';
+import { Code } from '@/code/entities/code.entity';
 
 export class DatabaseServiceMock implements DatabaseServiceTemplate {
   private users: Array<User> = [];
@@ -106,6 +107,14 @@ export class DatabaseServiceMock implements DatabaseServiceTemplate {
     };
     this.users.push(user);
     return user;
+  }
+
+  async createCode({}: Prisma.CodeCreateInput): Promise<Code> {
+    return {} as Code;
+  }
+
+  async findCodeByValue(): Promise<Code | null> {
+    return {} as Code;
   }
 
   reset() {}

@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Code, Prisma } from '@prisma/client';
 import { UUID } from 'node:crypto';
 import { PageRequest } from '../database.types';
 import { User } from '@/users/entities/user.entity';
@@ -23,6 +23,10 @@ export abstract class DatabaseServiceTemplate {
   abstract removeUserById(id: UUID): Promise<User | null>;
 
   abstract signUpUser(data: Prisma.UserCreateInput): Promise<User | null>;
+
+  abstract createCode(data: Prisma.CodeCreateInput): Promise<Code>;
+
+  abstract findCodeByValue(value: number): Promise<Code | null>;
 
   abstract reset(): void;
 }

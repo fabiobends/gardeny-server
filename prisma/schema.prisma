@@ -26,4 +26,13 @@ model User {
   image          String?
   active         Boolean
   role           Role
+  Code           Code[]
+}
+
+model Code {
+  id        String   @id @default(uuid())
+  value     Int      @unique
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
 }

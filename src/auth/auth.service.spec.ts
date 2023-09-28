@@ -1,17 +1,20 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from '@/app/app.module';
-import { SignUpUserDto } from '@/users/dto/sign-up-user.dto';
 import { USER_TEST, USER_TEST_PASSWORD } from '@/users/mocks/constants';
+import { Test, TestingModule } from '@nestjs/testing';
+import { isJWT } from 'class-validator';
+import { AppJwtModule } from './auth.module';
 import { AuthService } from './auth.service';
 import { UsersModuleMock } from './mocks';
-import { isJWT } from 'class-validator';
+import { CodeModuleMock } from '@/code/mocks';
+import { LoginUserDto } from '@/users/dto/login-user.dto';
+import { CreateUserDto } from '@/users/dto/create-user.dto';
+import { EmailModuleMock } from '@/email/mocks';
 
 describe('AuthService', () => {
   let service: AuthService;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [UsersModuleMock, AppModule],
+      imports: [EmailModuleMock, CodeModuleMock, UsersModuleMock, AppJwtModule],
       providers: [AuthService],
     }).compile();
 
@@ -24,19 +27,22 @@ describe('AuthService', () => {
 
   it('should be able to sign up a user', async () => {
     const spy = jest.spyOn(service, 'signUp');
-    const entries: SignUpUserDto = {
+    const entries: CreateUserDto = {
       email: USER_TEST.email,
       password: USER_TEST_PASSWORD,
+      name: USER_TEST.name,
+      description: USER_TEST.description,
     };
     const result = await service.signUp(entries);
     expect(spy).toHaveBeenCalled();
     expect(result).not.toBeNull();
-    expect(result).toHaveProperty('token');
+    expect(result).toHaveProperty('id');
+    expect(result).toHaveProperty('hashedPassword');
   });
 
   it('should be able to login a user', async () => {
     const spy = jest.spyOn(service, 'login');
-    const entries: SignUpUserDto = {
+    const entries: LoginUserDto = {
       email: USER_TEST.email,
       password: USER_TEST_PASSWORD,
     };

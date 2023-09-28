@@ -6,7 +6,6 @@ import { UsersService } from './users.service';
 import { DatabaseProviderMock } from '@/database/mocks';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UUID } from 'node:crypto';
-import { SignUpUserDto } from './dto/sign-up-user.dto';
 
 describe('UsersService', () => {
   let service: UsersService;
@@ -101,26 +100,5 @@ describe('UsersService', () => {
     expect(findAllSpy).toHaveBeenCalled();
     expect(result).toBeInstanceOf(Array);
     expect(result.length).toEqual(0);
-  });
-
-  it('should be able to sign up a user', async () => {
-    const spy = jest.spyOn(service, 'signUp');
-    const entries: SignUpUserDto = {
-      email: USER_TEST.email,
-      password: USER_TEST_PASSWORD,
-    };
-
-    const result = await service.signUp(entries);
-
-    expect(spy).toHaveBeenCalled();
-    expect(result).not.toHaveProperty('password');
-    expect(result).toHaveProperty('hashedPassword');
-    expect(result).toHaveProperty('id');
-    expect(result).toHaveProperty('image', null);
-    expect(result).toHaveProperty('role', Role.USER);
-    expect(result).toHaveProperty('active', false);
-    expect(result).toHaveProperty('email', entries.email);
-    expect(result?.createdAt).toBeInstanceOf(Date);
-    expect(result?.updatedAt).toBeInstanceOf(Date);
   });
 });

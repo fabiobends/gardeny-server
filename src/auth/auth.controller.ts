@@ -1,7 +1,7 @@
-import { SignUpUserDto } from '@/users/dto/sign-up-user.dto';
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Inject,
@@ -11,6 +11,8 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AllowUnauthorizedRequest } from './auth.guard';
+import { CreateUserDto } from '@/users/dto/create-user.dto';
+import { LoginUserDto } from '@/users/dto/login-user.dto';
 
 @Controller()
 export class AuthController {
@@ -20,7 +22,7 @@ export class AuthController {
   @Post('/sign-up')
   @AllowUnauthorizedRequest()
   @UsePipes(ValidationPipe)
-  signUp(@Body() signUpUserDto: SignUpUserDto) {
+  signUp(@Body() signUpUserDto: CreateUserDto) {
     return this.authService.signUp(signUpUserDto);
   }
 
@@ -28,7 +30,12 @@ export class AuthController {
   @AllowUnauthorizedRequest()
   @HttpCode(HttpStatus.OK)
   @UsePipes(ValidationPipe)
-  login(@Body() signUpUserDto: SignUpUserDto) {
-    return this.authService.login(signUpUserDto);
+  login(@Body() loginUserDto: LoginUserDto) {
+    return this.authService.login(loginUserDto);
+  }
+
+  @Get('/preview-code-verification')
+  previewEmailWithCodeVerification() {
+    return this.authService.previewCodeVerificationEmail();
   }
 }
